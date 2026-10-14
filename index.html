@@ -2,1114 +2,1026 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
 <title>纳洛酮临床应用 · 第10组</title>
 <style>
-  :root {
-    --bg: #0a1219;
-    --bg2: #0f1c26;
-    --panel: rgba(18, 36, 48, 0.72);
-    --panel-solid: #122430;
-    --border: rgba(94, 234, 212, 0.22);
-    --teal: #2dd4bf;
-    --cyan: #22d3ee;
-    --teal-dim: rgba(45, 212, 191, 0.15);
-    --cyan-glow: rgba(34, 211, 238, 0.45);
-    --text: #e8f4f8;
-    --muted: #8aa4b5;
-    --warn: #fbbf24;
-    --danger: #f87171;
-    --ok: #34d399;
-    --shadow: 0 12px 40px rgba(0,0,0,.45);
-    --radius: 16px;
-  }
+:root{
+  --bg:#070b12;
+  --bg2:#0d1524;
+  --panel:rgba(16,28,48,.72);
+  --panel2:rgba(22,38,62,.85);
+  --line:rgba(94,234,212,.22);
+  --line2:rgba(255,255,255,.08);
+  --text:#e8f1ff;
+  --muted:#8aa0bf;
+  --teal:#2dd4bf;
+  --teal2:#5eead4;
+  --cyan:#38bdf8;
+  --amber:#fbbf24;
+  --rose:#fb7185;
+  --violet:#a78bfa;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --r:18px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;overflow:hidden}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(900px 500px at 15% 10%,rgba(45,212,191,.12),transparent 55%),
+    radial-gradient(700px 420px at 85% 20%,rgba(56,189,248,.10),transparent 50%),
+    radial-gradient(800px 500px at 50% 100%,rgba(167,139,250,.08),transparent 55%),
+    linear-gradient(180deg,#070b12 0%,#0a1220 55%,#070b12 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+#deck{position:relative;z-index:1;width:100%;height:100%;overflow:hidden}
+.slide{
+  position:absolute;inset:0;padding:max(18px,var(--safe-t)) 22px calc(86px + var(--safe-b));
+  display:flex;flex-direction:column;opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateX(42px) scale(.985);filter:blur(6px);
+  transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1),filter .55s ease,visibility 0s linear .55s;
+}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;filter:none;transition-delay:0s}
+.slide.exit-left{opacity:0;transform:translateX(-36px) scale(.985);filter:blur(4px)}
+.slide.exit-right{opacity:0;transform:translateX(36px) scale(.985);filter:blur(4px)}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal2);opacity:.9;margin:0 0 8px;font-weight:600}
+h1,h2{margin:0;font-weight:750;letter-spacing:.02em;line-height:1.2}
+h1{font-size:clamp(1.55rem,4.2vw,2.55rem)}
+h2{font-size:clamp(1.25rem,3.2vw,1.85rem)}
+.sub{color:var(--muted);font-size:clamp(.88rem,1.8vw,1.05rem);line-height:1.55;margin:.55rem 0 0;max-width:46rem}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+  background:linear-gradient(135deg,rgba(45,212,191,.16),rgba(56,189,248,.10));
+  border:1px solid var(--line);color:var(--teal2);font-size:12px;font-weight:650;letter-spacing:.04em;
+}
+.chip{
+  display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;border-radius:999px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line2);color:var(--text);font-size:13px;font-weight:600;
+  cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,border-color .25s,background .25s;user-select:none;
+}
+.chip:hover,.chip:focus-visible,.chip.on{
+  transform:translateY(-2px) scale(1.04);
+  border-color:rgba(45,212,191,.55);
+  background:rgba(45,212,191,.12);
+  box-shadow:0 0 0 1px rgba(45,212,191,.25),0 10px 30px rgba(45,212,191,.18);
+  outline:none;
+}
+.panel{
+  background:linear-gradient(160deg,var(--panel),rgba(10,16,28,.55));
+  border:1px solid var(--line2);border-radius:var(--r);box-shadow:var(--shadow);backdrop-filter:blur(14px);
+}
+.btn{
+  appearance:none;border:1px solid var(--line);background:linear-gradient(180deg,rgba(45,212,191,.18),rgba(45,212,191,.06));
+  color:var(--text);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:650;cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s,border-color .2s,background .2s;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,212,191,.2);border-color:rgba(45,212,191,.5)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line2)}
+.btn.amber{border-color:rgba(251,191,36,.45);background:linear-gradient(180deg,rgba(251,191,36,.2),rgba(251,191,36,.06))}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-      "Noto Sans SC", system-ui, -apple-system, sans-serif;
-    overflow: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
+/* NAV */
+#nav{
+  position:fixed;left:50%;bottom:calc(14px + var(--safe-b));transform:translateX(-50%);
+  z-index:50;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 14px;
+  background:rgba(8,14,24,.78);border:1px solid rgba(255,255,255,.1);border-radius:999px;
+  backdrop-filter:blur(16px);box-shadow:0 12px 40px rgba(0,0,0,.4);
+}
+.nav-btn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.05);
+  color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:16px;transition:.2s;
+}
+.nav-btn:hover{border-color:var(--teal);background:rgba(45,212,191,.12);transform:scale(1.05)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.dots{display:flex;gap:7px;align-items:center}
+.dot{
+  width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.22);border:0;cursor:pointer;padding:0;
+  transition:transform .25s,background .25s,width .25s,border-radius .25s;
+}
+.dot.active{width:22px;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--cyan));box-shadow:0 0 12px rgba(45,212,191,.55)}
+.progress-wrap{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;background:rgba(255,255,255,.06)}
+.progress-bar{height:100%;width:20%;background:linear-gradient(90deg,var(--teal),var(--cyan),var(--violet));box-shadow:0 0 16px rgba(45,212,191,.55);transition:width .45s cubic-bezier(.22,1,.36,1)}
+.slide-count{font-size:11px;color:var(--muted);min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
 
-  /* Ambient background */
-  .bg-glow {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(34,211,238,.12), transparent 50%),
-      radial-gradient(ellipse 60% 40% at 85% 80%, rgba(45,212,191,.10), transparent 45%),
-      radial-gradient(ellipse 40% 30% at 50% 50%, rgba(15,28,38,.8), transparent 70%),
-      var(--bg);
-  }
-  .bg-grid {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background-image:
-      linear-gradient(rgba(45,212,191,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(45,212,191,.04) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
-  }
+/* ===== SLIDE 1 ===== */
+#s1{justify-content:center;align-items:stretch}
+.hero{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;max-width:1100px;margin:0 auto;width:100%;
+}
+.logo-orb{
+  width:min(340px,78vw);aspect-ratio:1;margin:0 auto;position:relative;isolation:isolate;
+  animation:breathe 4.2s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+.logo-orb .ring{
+  position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.35),transparent 18%),
+    radial-gradient(circle at 50% 55%,rgba(45,212,191,.35),rgba(8,16,30,.2) 55%,rgba(5,10,18,.85) 72%),
+    conic-gradient(from 210deg,rgba(45,212,191,.0),rgba(45,212,191,.55),rgba(56,189,248,.4),rgba(167,139,250,.35),transparent 70%);
+  box-shadow:inset 0 0 40px rgba(45,212,191,.25),0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(45,212,191,.2);
+  border:1px solid rgba(94,234,212,.35);
+}
+.logo-orb .core{
+  position:absolute;inset:28%;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#7ff5e4,#14b8a6 45%,#0f766e 80%);
+  box-shadow:0 0 40px rgba(45,212,191,.65),inset 0 -10px 20px rgba(0,0,0,.25);
+  display:grid;place-items:center;font-weight:800;font-size:clamp(1.4rem,4vw,2rem);color:#042f2e;letter-spacing:.06em;
+}
+.logo-orb .pulse{
+  position:absolute;inset:-6%;border-radius:50%;border:1px solid rgba(45,212,191,.35);
+  animation:ping 2.8s ease-out infinite;
+}
+@keyframes ping{0%{transform:scale(.92);opacity:.7}100%{transform:scale(1.18);opacity:0}}
+.hero-copy .title-in{opacity:0;transform:translateY(18px);animation:rise .8s .1s cubic-bezier(.22,1,.36,1) forwards}
+.hero-copy .hook{opacity:0;transform:translateY(18px);animation:rise .8s .28s cubic-bezier(.22,1,.36,1) forwards}
+.hero-copy .chips{opacity:0;transform:translateY(18px);animation:rise .8s .45s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.parallax-layer{will-change:transform;transition:transform .12s linear}
+.hint-line{margin-top:22px;font-size:12px;color:var(--muted)}
 
-  .deck {
-    position: relative; z-index: 1;
-    height: 100vh; width: 100vw;
-    overflow: hidden;
-  }
+/* ===== SLIDE 2 MECHANISM ===== */
+#s2 .mech-wrap{flex:1;display:grid;grid-template-columns:1.2fr .8fr;gap:18px;min-height:0;margin-top:10px}
+.stage{
+  position:relative;overflow:hidden;border-radius:22px;min-height:320px;
+  background:
+    radial-gradient(500px 280px at 50% 40%,rgba(45,212,191,.08),transparent 60%),
+    linear-gradient(160deg,#0b1526,#071018 70%);
+  border:1px solid rgba(94,234,212,.18);
+  box-shadow:inset 0 0 80px rgba(0,0,0,.45),var(--shadow);
+}
+.stage::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.55) 100%);
+}
+.membrane{
+  position:absolute;left:8%;right:8%;top:38%;height:42%;
+  background:
+    linear-gradient(180deg,rgba(56,189,248,.08),transparent 30%),
+    radial-gradient(120% 80% at 50% 0%,rgba(45,212,191,.12),transparent 50%),
+    linear-gradient(180deg,rgba(20,40,70,.55),rgba(8,14,24,.2));
+  border-radius:40% 40% 20% 20%/60% 60% 30% 30%;
+  border:1px solid rgba(94,234,212,.15);
+  filter:drop-shadow(0 20px 40px rgba(0,0,0,.4));
+}
+.pocket{
+  position:absolute;left:50%;top:48%;width:108px;height:108px;transform:translate(-50%,-50%);
+  border-radius:42% 48% 45% 50%;
+  background:
+    radial-gradient(circle at 40% 30%,rgba(255,255,255,.18),transparent 25%),
+    radial-gradient(circle at 50% 55%,rgba(15,23,42,.15),rgba(2,6,23,.75) 70%),
+    linear-gradient(145deg,rgba(45,212,191,.25),rgba(15,23,42,.8));
+  box-shadow:
+    inset 0 14px 28px rgba(0,0,0,.55),
+    inset 0 -8px 16px rgba(45,212,191,.15),
+    0 0 0 2px rgba(94,234,212,.25),
+    0 18px 40px rgba(0,0,0,.45);
+  transition:box-shadow .45s ease,filter .45s;
+}
+.pocket.glow{
+  box-shadow:
+    inset 0 10px 20px rgba(0,0,0,.35),
+    inset 0 -10px 24px rgba(45,212,191,.35),
+    0 0 0 3px rgba(45,212,191,.55),
+    0 0 50px rgba(45,212,191,.45),
+    0 18px 40px rgba(0,0,0,.45);
+  filter:saturate(1.2);
+}
+.pocket.magnet{outline:2px dashed rgba(45,212,191,.55);outline-offset:8px}
+.agonist,.naloxone{
+  position:absolute;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;
+  font-size:11px;font-weight:800;letter-spacing:.04em;user-select:none;touch-action:none;
+  box-shadow:0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.35);
+}
+.agonist{
+  left:50%;top:48%;transform:translate(-50%,-50%);
+  background:
+    radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),transparent 30%),
+    linear-gradient(145deg,#fb7185,#be123c 70%);
+  color:#fff;border:1px solid rgba(255,255,255,.25);z-index:3;pointer-events:none;
+  transition:transform .15s linear,opacity .3s;
+}
+.agonist.eject{animation:eject .7s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes eject{
+  0%{transform:translate(-50%,-50%) scale(1) rotate(0)}
+  40%{transform:translate(10%,-120%) scale(1.05) rotate(18deg)}
+  100%{transform:translate(140%,-180%) scale(.6) rotate(48deg);opacity:0}
+}
+.naloxone{
+  left:14%;bottom:14%;cursor:grab;z-index:5;
+  background:
+    radial-gradient(circle at 30% 22%,rgba(255,255,255,.5),transparent 28%),
+    linear-gradient(145deg,#5eead4,#0d9488 65%,#115e59);
+  color:#042f2e;border:1px solid rgba(255,255,255,.35);
+  transition:box-shadow .2s,filter .2s;
+}
+.naloxone:active,.naloxone.dragging{cursor:grabbing;box-shadow:0 22px 40px rgba(45,212,191,.35),0 10px 20px rgba(0,0,0,.5);filter:brightness(1.08);z-index:8}
+.naloxone.docked{
+  left:50%;top:48%;bottom:auto;transform:translate(-50%,-50%) !important;
+  box-shadow:0 0 40px rgba(45,212,191,.55),0 14px 28px rgba(0,0,0,.4);
+  pointer-events:none;
+}
+.particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;z-index:6;background:var(--teal2);box-shadow:0 0 10px var(--teal)}
+.vitals{
+  position:absolute;right:14px;top:14px;width:min(190px,42%);padding:10px 12px;border-radius:14px;
+  background:rgba(4,10,18,.72);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px);
+}
+.vitals .label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.vitals .val{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--rose);transition:color .6s}
+.vitals .val.ok{color:var(--teal2)}
+.wave{width:100%;height:36px;margin-top:6px}
+.wave path{fill:none;stroke:var(--rose);stroke-width:2.2;stroke-linecap:round;transition:stroke .6s}
+.wave.ok path{stroke:var(--teal2)}
+.chest{
+  position:absolute;left:18px;top:18px;width:54px;height:54px;border-radius:16px;
+  background:rgba(4,10,18,.65);border:1px solid rgba(255,255,255,.1);display:grid;place-items:center;
+}
+.lungs{width:28px;height:22px;position:relative;animation:breatheLow 2.4s ease-in-out infinite}
+.lungs::before,.lungs::after{
+  content:"";position:absolute;top:0;width:12px;height:20px;border-radius:60% 60% 40% 40%;
+  background:linear-gradient(180deg,#fb7185,#9f1239);opacity:.85;
+}
+.lungs::before{left:0;transform-origin:right center}
+.lungs::after{right:0;transform-origin:left center}
+.chest.ok .lungs{animation:breatheOk 1.5s ease-in-out infinite}
+.chest.ok .lungs::before,.chest.ok .lungs::after{background:linear-gradient(180deg,#5eead4,#0f766e)}
+@keyframes breatheLow{0%,100%{transform:scale(.88)}50%{transform:scale(.96)}}
+@keyframes breatheOk{0%,100%{transform:scale(.92)}50%{transform:scale(1.12)}}
+.status-line{
+  position:absolute;left:14px;right:14px;bottom:12px;padding:10px 12px;border-radius:12px;
+  background:rgba(4,10,18,.75);border:1px solid rgba(255,255,255,.1);font-size:13px;color:var(--muted);
+  transition:color .3s,border-color .3s,background .3s;
+}
+.status-line.ok{color:var(--teal2);border-color:rgba(45,212,191,.4);background:rgba(13,148,136,.15)}
+.mech-side{display:flex;flex-direction:column;gap:12px;min-height:0}
+.mech-caption{padding:14px 16px;font-size:14px;line-height:1.55;color:var(--text)}
+.mech-caption strong{color:var(--teal2);font-weight:700}
+.mech-actions{display:flex;flex-wrap:wrap;gap:8px}
+.flash{position:fixed;inset:0;pointer-events:none;z-index:100;background:rgba(94,234,212,.18);opacity:0}
+.flash.on{animation:flash .35s ease-out}
+@keyframes flash{0%{opacity:.55}100%{opacity:0}}
 
-  .slide {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    padding: 36px 56px 72px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(40px) scale(.985);
-    transition: opacity .45s ease, transform .45s ease, visibility .45s;
-    pointer-events: none;
-  }
-  .slide.active {
-    opacity: 1; visibility: visible;
-    transform: translateX(0) scale(1);
-    pointer-events: auto;
-  }
-  .slide.exit-left {
-    opacity: 0; transform: translateX(-40px) scale(.985);
-  }
+/* ===== SLIDE 3 USES ===== */
+#s3 .uses-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.scene-switch{display:flex;flex-wrap:wrap;gap:6px}
+.scene-btn{
+  border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--muted);
+  border-radius:999px;padding:6px 10px;font-size:11px;font-weight:650;cursor:pointer;transition:.2s;
+}
+.scene-btn.on,.scene-btn:hover{color:var(--text);border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.12);box-shadow:0 0 16px rgba(45,212,191,.15)}
+.use-grid{
+  flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;min-height:0;align-content:start;
+}
+.use-card{
+  grid-column:span 2;padding:14px 14px 12px;border-radius:18px;cursor:pointer;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,rgba(18,30,50,.9),rgba(10,16,28,.75));
+  border:1px solid var(--line2);transform-style:preserve-3d;transition:transform .25s ease,border-color .25s,box-shadow .25s,opacity .4s;
+  opacity:0;transform:translateY(16px);
+}
+.use-card.show{opacity:1;transform:translateY(0)}
+.use-card:nth-child(4),.use-card:nth-child(5){grid-column:span 3}
+.use-card::before{
+  content:"";position:absolute;inset:0;background:radial-gradient(400px 120px at var(--mx,50%) var(--my,0%),rgba(45,212,191,.14),transparent 55%);
+  opacity:0;transition:opacity .25s;pointer-events:none;
+}
+.use-card:hover::before,.use-card.open::before{opacity:1}
+.use-card:hover,.use-card.open{
+  border-color:rgba(45,212,191,.4);
+  box-shadow:0 16px 40px rgba(0,0,0,.35),0 0 0 1px rgba(45,212,191,.15);
+}
+.use-card.dim{opacity:.38;filter:grayscale(.2)}
+.use-card .num{
+  width:28px;height:28px;border-radius:10px;display:grid;place-items:center;font-size:12px;font-weight:800;
+  background:rgba(45,212,191,.12);color:var(--teal2);border:1px solid rgba(45,212,191,.3);margin-bottom:8px;
+}
+.use-card h3{margin:0 0 6px;font-size:15px;font-weight:750}
+.use-card .teaser{margin:0;font-size:12px;color:var(--muted);line-height:1.45}
+.use-card .detail{
+  max-height:0;overflow:hidden;opacity:0;transition:max-height .4s cubic-bezier(.22,1,.36,1),opacity .3s,margin .3s;
+  margin-top:0;font-size:12.5px;line-height:1.55;color:#c9d7ea;
+}
+.use-card.open .detail{max-height:160px;opacity:1;margin-top:10px}
+.use-card .tag{
+  display:inline-block;margin-top:8px;font-size:10px;padding:3px 8px;border-radius:999px;
+  background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:var(--violet);font-weight:650;
+}
+.use-hint{font-size:12px;color:var(--muted);margin-top:8px}
 
-  /* Top bar */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px; flex-shrink: 0;
-  }
-  .badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12px; letter-spacing: .08em; color: var(--teal);
-    background: var(--teal-dim); border: 1px solid var(--border);
-    padding: 6px 14px; border-radius: 999px; font-weight: 600;
-  }
-  .badge::before {
-    content: ""; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow);
-  }
-  .slide-label { font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+/* ===== SLIDE 4 DOSING ===== */
+#s4 .dose-layout{flex:1;display:grid;grid-template-columns:220px 1fr;gap:14px;min-height:0;margin-top:10px}
+.stepper{display:flex;flex-direction:column;gap:8px}
+.step{
+  text-align:left;padding:12px 12px;border-radius:14px;border:1px solid var(--line2);
+  background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;transition:.25s;font-size:13px;font-weight:650;
+}
+.step .i{display:block;font-size:10px;letter-spacing:.12em;color:var(--teal2);margin-bottom:3px;opacity:.8}
+.step.on,.step:hover{
+  color:var(--text);border-color:rgba(45,212,191,.45);
+  background:linear-gradient(135deg,rgba(45,212,191,.14),rgba(56,189,248,.08));
+  box-shadow:0 8px 24px rgba(45,212,191,.12);transform:translateX(3px);
+}
+.dose-panel{padding:18px 18px 14px;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:auto}
+.dose-panel h3{margin:0;font-size:1.15rem}
+.dose-meta{display:flex;flex-wrap:wrap;gap:8px}
+.pill{
+  padding:6px 10px;border-radius:999px;font-size:12px;font-weight:650;
+  background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#7dd3fc;
+}
+.timeline{display:flex;align-items:stretch;gap:0;margin:6px 0 2px;overflow:hidden}
+.t-node{
+  flex:1;position:relative;padding:10px 8px 8px;text-align:center;font-size:11px;color:var(--muted);
+  opacity:0;transform:translateY(8px);transition:.35s;
+}
+.t-node.show{opacity:1;transform:none}
+.t-node::before{
+  content:"";position:absolute;left:50%;top:0;width:10px;height:10px;border-radius:50%;transform:translateX(-50%);
+  background:var(--teal);box-shadow:0 0 12px rgba(45,212,191,.6);
+}
+.t-node:not(:last-child)::after{
+  content:"";position:absolute;left:calc(50% + 8px);right:calc(-50% + 8px);top:4px;height:2px;
+  background:linear-gradient(90deg,rgba(45,212,191,.7),rgba(56,189,248,.3));
+}
+.t-node b{display:block;color:var(--text);font-size:12px;margin-top:10px}
+.warn{
+  margin-top:auto;padding:12px 14px;border-radius:14px;border:1px solid rgba(251,191,36,.35);
+  background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(251,113,133,.06));
+  color:#fde68a;font-size:12.5px;line-height:1.5;position:relative;overflow:hidden;
+}
+.warn::after{
+  content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+  transform:translateX(-100%);animation:shine 3.2s ease-in-out infinite;
+}
+@keyframes shine{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.sources{margin-top:8px;font-size:10px;color:rgba(138,160,191,.75);line-height:1.45;word-break:break-all}
+.sources a{color:rgba(94,234,212,.75);text-decoration:none}
+.sources a:hover{text-decoration:underline}
 
-  h1 {
-    font-size: clamp(28px, 3.2vw, 40px); font-weight: 700;
-    line-height: 1.25; letter-spacing: -.02em;
-    background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
-    -webkit-background-clip: text; background-clip: text;
-    color: transparent;
-  }
-  h2 {
-    font-size: clamp(22px, 2.4vw, 30px); font-weight: 700;
-    margin-bottom: 6px; letter-spacing: -.01em;
-  }
-  .sub {
-    color: var(--muted); font-size: 15px; line-height: 1.55; max-width: 720px;
-  }
-  .hook {
-    margin-top: 10px; font-size: 16px; color: var(--cyan);
-    font-weight: 500; letter-spacing: .02em;
-  }
+/* ===== SLIDE 5 ===== */
+#s5{justify-content:center}
+.end-wrap{max-width:820px;margin:0 auto;width:100%}
+.takeaways{display:flex;flex-direction:column;gap:10px;margin:18px 0}
+.tk{
+  display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:14px;cursor:pointer;
+  background:rgba(255,255,255,.03);border:1px solid var(--line2);transition:.25s;opacity:0;transform:translateX(-12px);
+}
+.tk.show{opacity:1;transform:none}
+.tk:hover{border-color:rgba(45,212,191,.35);background:rgba(45,212,191,.06)}
+.tk.done{border-color:rgba(45,212,191,.45);background:rgba(13,148,136,.12)}
+.tk .box{
+  width:22px;height:22px;border-radius:7px;border:1.5px solid rgba(94,234,212,.45);flex:0 0 auto;margin-top:1px;
+  display:grid;place-items:center;transition:.25s;background:rgba(0,0,0,.2);
+}
+.tk.done .box{background:var(--teal);border-color:var(--teal);box-shadow:0 0 16px rgba(45,212,191,.45)}
+.tk .box svg{opacity:0;transform:scale(.5);transition:.2s}
+.tk.done .box svg{opacity:1;transform:scale(1)}
+.tk p{margin:0;font-size:14px;line-height:1.45}
+.compare{
+  padding:12px 14px;border-radius:14px;border:1px solid rgba(167,139,250,.3);
+  background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(45,212,191,.06));
+  font-size:13px;line-height:1.5;color:#d8d0ff;
+}
+.compare strong{color:var(--teal2)}
+.cta{
+  margin-top:22px;display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;
+  background:linear-gradient(135deg,rgba(45,212,191,.25),rgba(56,189,248,.18));
+  border:1px solid rgba(94,234,212,.45);font-weight:750;font-size:15px;cursor:default;
+  animation:ctaPulse 2.2s ease-in-out infinite;box-shadow:0 0 30px rgba(45,212,191,.2);
+}
+@keyframes ctaPulse{0%,100%{transform:scale(1);box-shadow:0 0 24px rgba(45,212,191,.2)}50%{transform:scale(1.03);box-shadow:0 0 40px rgba(45,212,191,.4)}}
+.end-thanks{margin-top:10px;font-size:12px;color:var(--muted)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90;overflow:hidden}
+.confetti i{position:absolute;top:-10px;width:6px;height:10px;border-radius:2px;opacity:0;animation:fall 1.4s ease-out forwards}
+@keyframes fall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}
 
-  .glass {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: var(--shadow);
-  }
-
-  /* ===== SLIDE 1 ===== */
-  .s1-body {
-    flex: 1; display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 28px; align-items: center; min-height: 0;
-  }
-  .s1-left { display: flex; flex-direction: column; gap: 18px; }
-  .mol-preview {
-    position: relative; height: 220px;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  .mol-ring {
-    position: absolute; width: 180px; height: 180px; border-radius: 50%;
-    border: 1px solid rgba(45,212,191,.25);
-    animation: spin 20s linear infinite;
-  }
-  .mol-ring::after {
-    content: ""; position: absolute; inset: 18px; border-radius: 50%;
-    border: 1px dashed rgba(34,211,238,.3);
-    animation: spin 14s linear infinite reverse;
-  }
-  .mol-core {
-    width: 88px; height: 88px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #5eead4, #0d9488 70%, #134e4a);
-    box-shadow: 0 0 40px rgba(45,212,191,.55), inset 0 0 20px rgba(255,255,255,.15);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; color: #042f2e; letter-spacing: .04em;
-    z-index: 1;
-  }
-  .mol-label {
-    position: absolute; bottom: 16px; font-size: 12px; color: var(--muted);
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .feature-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  }
-  .feat {
-    padding: 16px 18px; transition: border-color .25s, transform .25s, box-shadow .25s;
-    cursor: default;
-  }
-  .feat:hover {
-    border-color: rgba(45,212,191,.5);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(45,212,191,.12);
-  }
-  .feat-icon {
-    width: 32px; height: 32px; border-radius: 10px;
-    background: var(--teal-dim); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 10px; font-size: 15px;
-  }
-  .feat h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #f0fdfa; }
-  .feat p { font-size: 12px; color: var(--muted); line-height: 1.45; }
-
-  .meta-row {
-    display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px;
-  }
-  .meta-chip {
-    font-size: 12px; color: var(--muted);
-    padding: 4px 10px; border-radius: 8px;
-    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
-  }
-
-  /* ===== SLIDE 2 HERO ===== */
-  .s2-body {
-    flex: 1; display: flex; flex-direction: column; min-height: 0; gap: 12px;
-  }
-  .demo-stage {
-    flex: 1; position: relative; min-height: 0;
-    padding: 20px 24px; display: grid;
-    grid-template-columns: 1fr 220px; gap: 20px;
-    overflow: hidden;
-  }
-  .demo-canvas {
-    position: relative; display: flex; align-items: center; justify-content: center;
-    min-height: 320px;
-  }
-
-  /* Receptor */
-  .receptor {
-    position: relative; width: 200px; height: 200px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 50% 50%, rgba(15,28,38,.9) 0 42%, transparent 43%),
-      conic-gradient(from 0deg, rgba(248,113,113,.35), rgba(251,191,36,.25), rgba(248,113,113,.35));
-    border: 2px solid rgba(248,113,113,.45);
-    box-shadow: 0 0 30px rgba(248,113,113,.25), inset 0 0 40px rgba(0,0,0,.5);
-    transition: border-color .5s, box-shadow .5s, background .5s;
-  }
-  .receptor.breathing {
-    animation: breathe 2.4s ease-in-out infinite;
-  }
-  .receptor.cleared {
-    border-color: rgba(45,212,191,.7);
-    background:
-      radial-gradient(circle at 50% 50%, rgba(15,40,40,.95) 0 42%, transparent 43%),
-      conic-gradient(from 0deg, rgba(45,212,191,.4), rgba(34,211,238,.3), rgba(45,212,191,.4));
-    box-shadow: 0 0 40px rgba(45,212,191,.45), inset 0 0 40px rgba(0,0,0,.4);
-    animation: none;
-  }
-  @keyframes breathe {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 24px rgba(248,113,113,.22), inset 0 0 40px rgba(0,0,0,.5); }
-    50% { transform: scale(1.04); box-shadow: 0 0 40px rgba(248,113,113,.4), inset 0 0 40px rgba(0,0,0,.5); }
-  }
-  .pocket {
-    position: absolute; inset: 52px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #1e3344, #0a1520);
-    border: 1px dashed rgba(255,255,255,.12);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .receptor-tag {
-    position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
-    font-size: 12px; color: var(--muted); white-space: nowrap;
-    letter-spacing: .06em;
-  }
-  .receptor.cleared .receptor-tag { color: var(--teal); }
-
-  /* Molecules */
-  .mol {
-    width: 56px; height: 56px; border-radius: 14px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 700; letter-spacing: .04em;
-    cursor: grab; user-select: none; touch-action: none;
-    transition: transform .2s, box-shadow .2s, opacity .4s;
-    z-index: 5;
-  }
-  .mol:active { cursor: grabbing; }
-  .mol.agonist {
-    background: linear-gradient(145deg, #f87171, #b91c1c);
-    color: #fff; box-shadow: 0 4px 16px rgba(248,113,113,.45);
-  }
-  .mol.naloxone {
-    background: linear-gradient(145deg, #5eead4, #0f766e);
-    color: #042f2e; box-shadow: 0 4px 20px rgba(45,212,191,.5);
-  }
-  .mol.naloxone:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(45,212,191,.7); }
-  .mol.naloxone.dragging {
-    opacity: .92; transform: scale(1.12);
-    box-shadow: 0 12px 36px rgba(45,212,191,.8);
-    z-index: 50;
-  }
-  .mol .mol-sym { font-size: 18px; line-height: 1; margin-bottom: 2px; }
-  .agonist-in-pocket {
-    position: absolute; transition: transform .55s cubic-bezier(.34,1.4,.64,1), opacity .45s;
-  }
-  .agonist-in-pocket.ejected {
-    transform: translate(140px, -90px) rotate(25deg) scale(.7);
-    opacity: 0;
-    pointer-events: none;
-  }
-  .naloxone-docked {
-    position: absolute;
-    animation: dockPop .45s cubic-bezier(.34,1.4,.64,1);
-  }
-  @keyframes dockPop {
-    0% { transform: scale(.4); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  .naloxone-shelf {
-    position: absolute; left: 24px; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-  }
-  .shelf-hint {
-    font-size: 11px; color: var(--muted); text-align: center; max-width: 90px;
-    line-height: 1.4;
-  }
-  .shelf-hint strong { color: var(--teal); display: block; margin-bottom: 2px; }
-
-  /* Meter panel */
-  .meter-panel {
-    display: flex; flex-direction: column; gap: 14px; justify-content: center;
-  }
-  .meter-card { padding: 16px; }
-  .meter-card h4 {
-    font-size: 12px; color: var(--muted); margin-bottom: 10px;
-    letter-spacing: .06em; font-weight: 600;
-  }
-  .meter-track {
-    height: 14px; border-radius: 999px;
-    background: rgba(255,255,255,.06); overflow: hidden;
-    border: 1px solid rgba(255,255,255,.08);
-  }
-  .meter-fill {
-    height: 100%; width: 22%; border-radius: 999px;
-    background: linear-gradient(90deg, #f87171, #fbbf24);
-    transition: width .8s cubic-bezier(.22,1,.36,1), background .6s;
-    box-shadow: 0 0 12px rgba(248,113,113,.4);
-  }
-  .meter-fill.ok {
-    width: 88%;
-    background: linear-gradient(90deg, #2dd4bf, #22d3ee);
-    box-shadow: 0 0 14px rgba(45,212,191,.5);
-  }
-  .meter-labels {
-    display: flex; justify-content: space-between;
-    font-size: 10px; color: var(--muted); margin-top: 6px;
-  }
-  .status-box {
-    padding: 14px 16px; min-height: 88px;
-  }
-  .status-box .st-label {
-    font-size: 11px; color: var(--muted); letter-spacing: .06em; margin-bottom: 6px;
-  }
-  .status-box .st-text {
-    font-size: 14px; font-weight: 600; line-height: 1.45; color: var(--warn);
-    transition: color .3s;
-  }
-  .status-box.ok .st-text { color: var(--ok); }
-
-  .demo-controls {
-    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-  }
-  .btn {
-    appearance: none; border: 1px solid var(--border);
-    background: var(--teal-dim); color: var(--teal);
-    padding: 8px 16px; border-radius: 10px; font-size: 13px;
-    font-weight: 600; cursor: pointer;
-    font-family: inherit; transition: all .2s;
-  }
-  .btn:hover {
-    background: rgba(45,212,191,.28); border-color: var(--teal);
-    box-shadow: 0 0 16px rgba(45,212,191,.25);
-  }
-  .btn.secondary {
-    background: rgba(255,255,255,.04); color: var(--muted);
-    border-color: rgba(255,255,255,.1);
-  }
-  .btn.secondary:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
-  .caption-bar {
-    font-size: 13px; color: var(--muted); line-height: 1.5;
-    padding: 10px 16px; border-left: 3px solid var(--teal);
-    background: rgba(45,212,191,.06); border-radius: 0 10px 10px 0;
-  }
-  .caption-bar strong { color: var(--teal); }
-
-  /* Particles */
-  .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-  .particle {
-    position: absolute; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
-    animation: burst .7s ease-out forwards;
-  }
-  @keyframes burst {
-    0% { opacity: 1; transform: translate(0,0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
-  }
-
-  /* ===== SLIDE 3 ===== */
-  .s3-body {
-    flex: 1; display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr 1fr;
-    gap: 14px; min-height: 0;
-  }
-  .app-card {
-    padding: 18px 20px; cursor: pointer;
-    transition: border-color .25s, transform .25s, box-shadow .25s;
-    display: flex; flex-direction: column; position: relative; overflow: hidden;
-  }
-  .app-card:hover, .app-card.open {
-    border-color: rgba(45,212,191,.55);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 32px rgba(45,212,191,.14);
-  }
-  .app-card.span2 { grid-column: span 1; }
-  .app-num {
-    font-size: 11px; font-weight: 700; color: var(--teal);
-    letter-spacing: .12em; margin-bottom: 8px;
-  }
-  .app-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-  .app-card .brief {
-    font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1;
-  }
-  .app-card .detail {
-    max-height: 0; overflow: hidden; opacity: 0;
-    transition: max-height .35s ease, opacity .3s, margin .3s;
-    font-size: 12.5px; color: #b8d4e0; line-height: 1.55;
-    margin-top: 0;
-  }
-  .app-card.open .detail {
-    max-height: 120px; opacity: 1; margin-top: 10px;
-  }
-  .app-tag {
-    align-self: flex-start; margin-top: 10px;
-    font-size: 10px; padding: 3px 8px; border-radius: 6px;
-    background: rgba(45,212,191,.12); color: var(--teal);
-    border: 1px solid var(--border); font-weight: 600; letter-spacing: .04em;
-  }
-  .app-tag.extend {
-    background: rgba(251,191,36,.1); color: var(--warn);
-    border-color: rgba(251,191,36,.3);
-  }
-  .app-tag.core {
-    background: rgba(248,113,113,.12); color: #fca5a5;
-    border-color: rgba(248,113,113,.3);
-  }
-  .hint-click {
-    font-size: 12px; color: var(--muted); margin-bottom: 10px;
-  }
-
-  /* ===== SLIDE 4 ===== */
-  .s4-body {
-    flex: 1; display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: 16px; min-height: 0;
-  }
-  .dose-block { padding: 20px 22px; }
-  .dose-block h3 {
-    font-size: 15px; font-weight: 700; margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .dose-block h3 .dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--teal);
-    box-shadow: 0 0 8px var(--cyan-glow);
-  }
-  .dose-table {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .dose-table th {
-    text-align: left; color: var(--muted); font-weight: 600;
-    font-size: 11px; letter-spacing: .06em; padding: 0 0 8px;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
-  .dose-table td {
-    padding: 10px 8px 10px 0; vertical-align: top;
-    border-bottom: 1px solid rgba(255,255,255,.04);
-    line-height: 1.45;
-  }
-  .dose-table td:first-child { color: var(--cyan); font-weight: 600; white-space: nowrap; width: 38%; }
-  .dose-table tr:last-child td { border-bottom: none; }
-
-  .caution-list { display: flex; flex-direction: column; gap: 10px; }
-  .caution {
-    padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start;
-  }
-  .caution-icon {
-    flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700;
-  }
-  .caution.warn .caution-icon { background: rgba(251,191,36,.15); color: var(--warn); }
-  .caution.danger .caution-icon { background: rgba(248,113,113,.15); color: var(--danger); }
-  .caution.info .caution-icon { background: var(--teal-dim); color: var(--teal); }
-  .caution h4 { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
-  .caution p { font-size: 12px; color: var(--muted); line-height: 1.45; }
-
-  .route-pills {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;
-  }
-  .route-pill {
-    font-size: 12px; padding: 5px 12px; border-radius: 999px;
-    border: 1px solid var(--border); color: var(--muted); font-weight: 600;
-  }
-  .route-pill.primary {
-    background: rgba(45,212,191,.18); color: var(--teal);
-    border-color: rgba(45,212,191,.45);
-  }
-
-  .cite-footer {
-    margin-top: auto; padding-top: 12px;
-    font-size: 10px; color: #5a7384; line-height: 1.55;
-    word-break: break-all;
-  }
-  .cite-footer a { color: #6b8a9c; text-decoration: none; }
-  .cite-footer a:hover { color: var(--teal); }
-
-  /* ===== SLIDE 5 ===== */
-  .s5-body {
-    flex: 1; display: grid;
-    grid-template-columns: 1.2fr .9fr;
-    gap: 24px; align-items: center; min-height: 0;
-  }
-  .takeaways { display: flex; flex-direction: column; gap: 12px; }
-  .tk {
-    display: flex; gap: 14px; align-items: flex-start;
-    padding: 14px 18px; transition: border-color .2s;
-  }
-  .tk:hover { border-color: rgba(45,212,191,.4); }
-  .tk-n {
-    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--teal), var(--cyan));
-    color: #042f2e; font-weight: 800; font-size: 13px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .tk p { font-size: 14px; line-height: 1.5; padding-top: 3px; }
-
-  .closing {
-    padding: 28px 26px; text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 14px;
-  }
-  .closing .big {
-    font-size: 32px; font-weight: 800;
-    background: linear-gradient(135deg, #fff, var(--cyan));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .closing .ask {
-    font-size: 16px; color: var(--muted);
-  }
-  .compare-line {
-    margin-top: 8px; padding: 12px 14px;
-    font-size: 12px; color: var(--muted); line-height: 1.5;
-    text-align: left; width: 100%;
-    border-top: 1px solid rgba(255,255,255,.06);
-  }
-  .compare-line strong { color: var(--teal); }
-
-  /* Nav */
-  .nav {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
-    height: 56px; display: flex; align-items: center; justify-content: center;
-    gap: 20px;
-    background: linear-gradient(transparent, rgba(10,18,25,.92) 30%);
-    padding: 0 24px 8px;
-  }
-  .nav-btn {
-    width: 40px; height: 40px; border-radius: 12px;
-    border: 1px solid var(--border); background: var(--panel-solid);
-    color: var(--teal); cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all .2s; font-family: inherit;
-  }
-  .nav-btn:hover:not(:disabled) {
-    background: rgba(45,212,191,.2); box-shadow: 0 0 16px rgba(45,212,191,.2);
-  }
-  .nav-btn:disabled { opacity: .3; cursor: not-allowed; }
-  .dots { display: flex; gap: 8px; align-items: center; }
-  .dot-nav {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: rgba(255,255,255,.18); border: none; cursor: pointer;
-    padding: 0; transition: all .25s;
-  }
-  .dot-nav.active {
-    width: 24px; border-radius: 4px;
-    background: linear-gradient(90deg, var(--teal), var(--cyan));
-    box-shadow: 0 0 10px rgba(45,212,191,.45);
-  }
-  .progress-text {
-    position: absolute; right: 28px; font-size: 12px; color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .kbd-hint {
-    position: absolute; left: 28px; font-size: 11px; color: #4a6270;
-  }
-
-  /* Drop target highlight */
-  .pocket.drop-ready {
-    border-color: rgba(45,212,191,.8);
-    box-shadow: 0 0 24px rgba(45,212,191,.4);
-    animation: pulse-ready .8s ease-in-out infinite;
-  }
-  @keyframes pulse-ready {
-    0%, 100% { box-shadow: 0 0 16px rgba(45,212,191,.3); }
-    50% { box-shadow: 0 0 28px rgba(45,212,191,.6); }
-  }
-
-  @media (max-width: 1100px) {
-    .slide { padding: 28px 36px 68px; }
-    .s1-body { grid-template-columns: 1fr; }
-    .mol-preview { height: 140px; }
-    .s3-body { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-    .s4-body, .s5-body { grid-template-columns: 1fr; overflow-y: auto; }
-    .demo-stage { grid-template-columns: 1fr; }
-    .meter-panel { flex-direction: row; flex-wrap: wrap; }
-    .meter-card, .status-box { flex: 1; min-width: 160px; }
-  }
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;text-align:center}
+  .chips{justify-content:center}
+  #s2 .mech-wrap{grid-template-columns:1fr}
+  .stage{min-height:280px}
+  .use-grid{grid-template-columns:1fr}
+  .use-card,.use-card:nth-child(4),.use-card:nth-child(5){grid-column:span 1}
+  #s4 .dose-layout{grid-template-columns:1fr}
+  .stepper{flex-direction:row;overflow:auto;padding-bottom:4px}
+  .step{min-width:140px}
+  .slide{padding-left:14px;padding-right:14px}
+}
+@media (max-height:700px){
+  .logo-orb{width:min(220px,50vw)}
+  h1{font-size:clamp(1.3rem,3.5vw,1.9rem)}
+  .sub{font-size:.9rem}
+}
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
-<div class="bg-grid"></div>
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+<div class="flash" id="flash"></div>
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+<div id="deck">
 
-<div class="deck" id="deck">
-
-  <!-- ========== SLIDE 1 ========== -->
-  <section class="slide active" data-i="0" aria-label="封面与药物速览">
-    <div class="topbar">
-      <span class="badge">中山大学 · 药学本科 · 第 10 组</span>
-      <span class="slide-label">01 / 封面 · 药物速览</span>
-    </div>
-    <div class="s1-body">
-      <div class="s1-left">
-        <div>
-          <h1>作为阿片受体拮抗剂，<br/>纳洛酮有哪些临床应用？</h1>
-          <p class="hook">一针逆转 · 竞争性拮抗 · 急诊生命线</p>
-          <p class="sub" style="margin-top:12px">
-            纳洛酮（Naloxone）是临床最常用的纯阿片受体拮抗剂。
-            本讲从受体机制切入，梳理其核心与延伸适应症，并强调给药与监护要点。
-          </p>
+  <!-- SLIDE 1 -->
+  <section class="slide active" id="s1" data-i="0" aria-label="封面">
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="badge title-in">药学本科 · 第 10 组</div>
+        <h1 class="title-in" style="margin-top:14px">作为阿片受体拮抗剂，<br/>纳洛酮有哪些<strong style="color:var(--teal2);font-weight:800">临床应用</strong>？</h1>
+        <p class="sub hook">急诊床旁的「逆转开关」——迅速拮抗阿片效应，抢回被抑制的呼吸与意识。</p>
+        <div class="chips" id="coverChips">
+          <button class="chip" type="button" data-tip="逆转呼吸抑制，急诊首选思路">过量</button>
+          <button class="chip" type="button" data-tip="拮抗残余阿片，滴定催醒">术后</button>
+          <button class="chip" type="button" data-tip="说明书适应症：促醒">乙醇中毒</button>
+          <button class="chip" type="button" data-tip="疑似阿片过量/依赖的鉴别">诊断</button>
         </div>
-        <div class="meta-row">
-          <span class="meta-chip">时限 5–8 min</span>
-          <span class="meta-chip">互动演示 · 第 2 页</span>
-          <span class="meta-chip">简体中文</span>
+        <p class="hint-line title-in" id="chipTip">轻触标签预览场景 · 共 5 页 · 5–8 分钟</p>
+      </div>
+      <div class="parallax-layer" id="orbLayer">
+        <div class="logo-orb" aria-hidden="true">
+          <div class="pulse"></div>
+          <div class="ring"></div>
+          <div class="core">NLX</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide" id="s2" data-i="1" aria-label="机制互动">
+    <div class="kicker">SHOWPIECE · 唯一机制页</div>
+    <h2>拖拽纳洛酮，看着它「顶」走激动剂</h2>
+    <p class="sub" style="margin-bottom:8px">竞争性拮抗（μ 最强），迅速逆转呼吸抑制等中枢抑制。</p>
+    <div class="mech-wrap">
+      <div class="stage" id="stage">
+        <div class="membrane"></div>
+        <div class="pocket" id="pocket" title="μ 受体口袋"></div>
+        <div class="agonist" id="agonist">阿片<br/>激动剂</div>
+        <div class="naloxone" id="naloxone" role="button" tabindex="0" aria-label="拖拽或点击纳洛酮对接受体">纳洛酮</div>
+        <div class="vitals">
+          <div class="label">呼吸 / SpO₂ 示意</div>
+          <div class="val" id="spo2">82%</div>
+          <svg class="wave" id="wave" viewBox="0 0 160 36" preserveAspectRatio="none"><path id="wavePath" d=""/></svg>
+        </div>
+        <div class="chest" id="chest"><div class="lungs"></div></div>
+        <div class="status-line" id="status">状态：激动剂占据 μ 口袋 · 呼吸抑制中 — 拖入纳洛酮</div>
+      </div>
+      <div class="mech-side">
+        <div class="panel mech-caption">
+          <strong>怎么玩：</strong>按住纳洛酮拖到中央口袋，靠近时会有磁吸；也可点按纳洛酮、或一键演示。对接成功后激动剂弹出，呼吸波形回升。
+        </div>
+        <div class="mech-actions">
+          <button class="btn" type="button" id="btnDemo">一键演示</button>
+          <button class="btn ghost" type="button" id="btnReset">重置</button>
+        </div>
+        <div class="panel mech-caption" style="flex:1;color:var(--muted);font-size:13px">
+          真实感提示：对接有惯性位移与粒子冲击；闪屏模拟「床旁起效」的瞬间感。<br/>本页只讲「竞争性置换」，不展开亚型长文。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide" id="s3" data-i="2" aria-label="临床用法">
+    <div class="uses-top">
       <div>
-        <div class="glass mol-preview" style="margin-bottom:14px">
-          <div class="mol-ring"></div>
-          <div class="mol-core">NLX</div>
-          <div class="mol-label">Naloxone · 阿片受体拮抗剂</div>
+        <div class="kicker">CLINICAL MAP · 内容主场</div>
+        <h2>临床用法全景</h2>
+        <p class="sub">点卡片展开用法要点；或用「场景切换」高亮对应适应症。</p>
+      </div>
+      <div class="scene-switch" id="sceneSwitch" role="tablist" aria-label="场景切换">
+        <button class="scene-btn on" data-scene="all" type="button">全部</button>
+        <button class="scene-btn" data-scene="0" type="button">急诊过量</button>
+        <button class="scene-btn" data-scene="1" type="button">术后催醒</button>
+        <button class="scene-btn" data-scene="2" type="button">乙醇中毒</button>
+        <button class="scene-btn" data-scene="3" type="button">诊断</button>
+        <button class="scene-btn" data-scene="4" type="button">延伸</button>
+      </div>
+    </div>
+    <div class="use-grid" id="useGrid">
+      <article class="use-card" data-i="0" tabindex="0">
+        <div class="num">01</div>
+        <h3>阿片类药物过量急救</h3>
+        <p class="teaser">逆转呼吸抑制 · 急诊首选思路</p>
+        <div class="detail">
+          <b>做什么：</b>竞争性拮抗，迅速改善通气与意识。<br/>
+          <b>何时用：</b>疑似/明确阿片过量，出现明显呼吸抑制。<br/>
+          <b>预期：</b>呼吸与神志可在数分钟内改善；需继续监护防再抑制。
         </div>
-        <div class="feature-grid">
-          <div class="glass feat">
-            <div class="feat-icon">⊕</div>
-            <h3>纯阿片受体拮抗剂</h3>
-            <p>对 μ / κ / δ 受体均有拮抗作用，无内在激动活性</p>
-          </div>
-          <div class="glass feat">
-            <div class="feat-icon">μ</div>
-            <h3>对 μ 亲和力最强</h3>
-            <p>优先占据 μ 受体，有效拮抗吗啡样呼吸抑制</p>
-          </div>
-          <div class="glass feat">
-            <div class="feat-icon">⚡</div>
-            <h3>起效快、作用短</h3>
-            <p>静脉用药数分钟内起效，作用时间常短于多数阿片药</p>
-          </div>
-          <div class="glass feat">
-            <div class="feat-icon">⌀</div>
-            <h3>无激动 · 无依赖</h3>
-            <p>本身不产生阿片样依赖；过量时毒性相对较低</p>
-          </div>
+      </article>
+      <article class="use-card" data-i="1" tabindex="0">
+        <div class="num">02</div>
+        <h3>麻醉 / 术后催醒</h3>
+        <p class="teaser">拮抗残余阿片 · 促清醒（滴定）</p>
+        <div class="detail">
+          <b>做什么：</b>拮抗残余阿片导致的呼吸抑制，促进苏醒。<br/>
+          <b>何时用：</b>术后通气不足、嗜睡且与阿片相关。<br/>
+          <b>预期：</b>小剂量滴定，恢复通气同时尽量保留镇痛，避免过猛逆转。
+        </div>
+      </article>
+      <article class="use-card" data-i="2" tabindex="0">
+        <div class="num">03</div>
+        <h3>急性乙醇中毒</h3>
+        <p class="teaser">促醒 · 说明书适应症</p>
+        <div class="detail">
+          <b>做什么：</b>用于急性酒精中毒的促醒支持。<br/>
+          <b>何时用：</b>重度乙醇中毒、意识抑制需促醒时（按说明书与临床判断）。<br/>
+          <b>预期：</b>意识可改善；仍需排除混合中毒并维持气道与循环。
+        </div>
+      </article>
+      <article class="use-card" data-i="3" tabindex="0">
+        <div class="num">04</div>
+        <h3>诊断性应用</h3>
+        <p class="teaser">疑似阿片过量或依赖的激发 / 鉴别</p>
+        <div class="detail">
+          <b>做什么：</b>在严密监护下用于鉴别/激发，观察是否出现逆转或戒断样反应。<br/>
+          <b>何时用：</b>临床表现高度提示阿片相关，需辅助判断时。<br/>
+          <b>预期：</b>阳性线索可支持诊断；依赖者可能诱发戒断，务必谨慎。
+        </div>
+      </article>
+      <article class="use-card" data-i="4" tabindex="0">
+        <div class="num">05</div>
+        <h3>延伸用法</h3>
+        <p class="teaser">抗休克、部分昏迷促醒等</p>
+        <div class="detail">
+          <b>做什么：</b>教材/文献常提及的延伸场景（如部分休克或昏迷促醒相关讨论）。<br/>
+          <b>何时用：</b>非核心一线，需结合具体病因与指南。<br/>
+          <b>预期：</b>证据与适应症边界因场景而异，课堂作拓展了解即可。
+        </div>
+        <span class="tag">延伸 / 教材常提</span>
+      </article>
+    </div>
+    <p class="use-hint">提示：再点同一卡片可收起 · 场景切换会高亮对应卡片</p>
+  </section>
+
+  <!-- SLIDE 4 -->
+  <section class="slide" id="s4" data-i="3" aria-label="怎么用">
+    <div class="kicker">PRACTICAL · 给药与场景</div>
+    <h2>怎么用：途径 · 剂量思路 · 监护</h2>
+    <p class="sub">点左侧场景，右侧显示对应操作要点（剂量为常见参考量级，临床个体化）。</p>
+    <div class="dose-layout">
+      <div class="stepper" id="stepper" role="tablist">
+        <button class="step on" data-step="0" type="button"><span class="i">ROUTE</span>给药途径</button>
+        <button class="step" data-step="1" type="button"><span class="i">OD</span>过量急救</button>
+        <button class="step" data-step="2" type="button"><span class="i">PACU</span>术后滴定</button>
+        <button class="step" data-step="3" type="button"><span class="i">EtOH</span>乙醇中毒</button>
+        <button class="step" data-step="4" type="button"><span class="i">WATCH</span>监护要点</button>
+      </div>
+      <div class="panel dose-panel" id="dosePanel">
+        <h3 id="doseTitle">给药途径</h3>
+        <div class="dose-meta" id="doseMeta"></div>
+        <div class="timeline" id="timeline"></div>
+        <p id="doseBody" style="margin:0;font-size:14px;line-height:1.6;color:#d5e2f5"></p>
+        <div class="warn" id="doseWarn"></div>
+        <div class="sources">
+          参考（说明书/公开药讯，汇报时注明）：
+          <a href="https://www.dayi.org.cn/drug/1157873.html" target="_blank" rel="noopener">dayi.org.cn</a> ·
+          <a href="http://www.newdruginfo.com/sms/hy105.htm" target="_blank" rel="noopener">newdruginfo.com</a> ·
+          <a href="https://www.chealth.org.cn/mon/drugs/article/MB145024451.html" target="_blank" rel="noopener">chealth.org.cn</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== SLIDE 2 ========== -->
-  <section class="slide" data-i="1" aria-label="机制互动台">
-    <div class="topbar">
-      <span class="badge">HERO · 机制互动</span>
-      <span class="slide-label">02 / 竞争性拮抗演示</span>
-    </div>
-    <h2>机制互动台：把纳洛酮拖上受体</h2>
-    <p class="sub" style="margin-bottom:8px">观察激动剂被置换 · 呼吸抑制恢复 · 感受「竞争性拮抗」</p>
-    <div class="s2-body">
-      <div class="glass demo-stage" id="demoStage">
-        <div class="demo-canvas" id="demoCanvas">
-          <div class="particles" id="particles"></div>
-
-          <div class="naloxone-shelf" id="naloxoneShelf">
-            <div class="mol naloxone" id="naloxoneMol" draggable="false" title="拖到受体口袋">
-              <span class="mol-sym">N</span>
-              纳洛酮
-            </div>
-            <div class="shelf-hint"><strong>拖拽 / 点击</strong>放到受体口袋</div>
-          </div>
-
-          <div class="receptor breathing" id="receptor">
-            <div class="pocket" id="pocket">
-              <div class="mol agonist agonist-in-pocket" id="agonistMol">
-                <span class="mol-sym">O</span>
-                激动剂
-              </div>
-            </div>
-            <div class="receptor-tag" id="receptorTag">μ 阿片受体 · 被占用</div>
-          </div>
-        </div>
-
-        <div class="meter-panel">
-          <div class="glass meter-card">
-            <h4>呼吸功能指数</h4>
-            <div class="meter-track">
-              <div class="meter-fill" id="respMeter"></div>
-            </div>
-            <div class="meter-labels"><span>抑制</span><span>正常</span></div>
-          </div>
-          <div class="glass status-box" id="statusBox">
-            <div class="st-label">当前状态</div>
-            <div class="st-text" id="statusText">阿片激动剂占据受体 → 呼吸抑制、镇静风险升高</div>
-          </div>
-          <div class="demo-controls">
-            <button type="button" class="btn" id="btnApply">一键拮抗</button>
-            <button type="button" class="btn secondary" id="btnReset">重置演示</button>
-          </div>
-        </div>
+  <!-- SLIDE 5 -->
+  <section class="slide" id="s5" data-i="4" aria-label="收束">
+    <div class="end-wrap">
+      <div class="kicker">TAKEAWAY · 用法收束</div>
+      <h2>记住这些「何时 / 怎么用」</h2>
+      <p class="sub">点选清单勾掉要点；全部勾选有小彩蛋。</p>
+      <div class="takeaways" id="takeaways">
+        <div class="tk" data-k="0" tabindex="0"><div class="box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke="#042f2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>过量急救：优先静脉，逆转呼吸抑制；给足量仍无效 → 重新考虑诊断。</p></div>
+        <div class="tk" data-k="1" tabindex="0"><div class="box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke="#042f2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>术后催醒：小剂量滴定，通气恢复但不过度掀翻镇痛。</p></div>
+        <div class="tk" data-k="2" tabindex="0"><div class="box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke="#042f2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>乙醇中毒：促醒属说明书适应症之一；重度可参考约 0.8–1.2 mg 并重复。</p></div>
+        <div class="tk" data-k="3" tabindex="0"><div class="box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke="#042f2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>半衰期常短于长效阿片 → 必须持续监护，警惕呼吸再抑制。</p></div>
+        <div class="tk" data-k="4" tabindex="0"><div class="box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.5 2.5L10 3" stroke="#042f2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p>依赖者可能诱发戒断；诊断性应用务必在监护条件下谨慎进行。</p></div>
       </div>
-      <div class="caption-bar">
-        <strong>要点：</strong>纳洛酮通过<strong>竞争性拮抗</strong> μ / κ / δ 受体（对 μ 最强），迅速置换受体上的阿片激动剂，从而逆转呼吸抑制、镇静、低血压等中枢与外周效应。作用维持时间较短，需警惕「再抑制」。
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SLIDE 3 ========== -->
-  <section class="slide" data-i="2" aria-label="临床应用地图">
-    <div class="topbar">
-      <span class="badge">临床图谱</span>
-      <span class="slide-label">03 / 临床应用地图</span>
-    </div>
-    <h2>临床应用地图</h2>
-    <p class="hint-click">点击卡片展开要点 · 核心适应症优先，延伸用途谨慎表述</p>
-    <div class="s3-body">
-      <div class="glass app-card open" data-card>
-        <div class="app-num">01 · 急诊核心</div>
-        <h3>阿片类药物过量</h3>
-        <p class="brief">逆转危及生命的呼吸抑制——纳洛酮最经典、最关键的用途。</p>
-        <div class="detail">吗啡、芬太尼、海洛因等过量时，静脉或肌注纳洛酮可在数分钟内改善通气。同时必须保证气道与给氧，拮抗后继续监护，防再抑制。</div>
-        <span class="app-tag core">核心适应症</span>
-      </div>
-      <div class="glass app-card" data-card>
-        <div class="app-num">02 · 围术期</div>
-        <h3>麻醉术后催醒</h3>
-        <p class="brief">拮抗残余阿片所致呼吸抑制，帮助患者苏醒与恢复自主呼吸。</p>
-        <div class="detail">宜小剂量滴定，避免完全翻转镇痛、诱发交感兴奋或躁动。术后监护仍不可放松。</div>
-        <span class="app-tag">常用场景</span>
-      </div>
-      <div class="glass app-card" data-card>
-        <div class="app-num">03 · 说明书适应症</div>
-        <h3>急性乙醇中毒促醒</h3>
-        <p class="brief">国内说明书列有急性酒精中毒时的促醒应用（机制与阿片过量不同）。</p>
-        <div class="detail">可作为综合救治措施之一，不能替代支持治疗与病因处理；具体用法遵循说明书与临床规范。</div>
-        <span class="app-tag">说明书适应症</span>
-      </div>
-      <div class="glass app-card" data-card>
-        <div class="app-num">04 · 诊断辅助</div>
-        <h3>激发 / 诊断试验</h3>
-        <p class="brief">对疑似阿片过量或依赖者，可用纳洛酮激发试验辅助判断。</p>
-        <div class="detail">若用药后迅速出现戒断样反应或意识改善，有助于支持阿片相关诊断。须在具备抢救条件的环境中进行。</div>
-        <span class="app-tag">诊断用途</span>
-      </div>
-      <div class="glass app-card" data-card style="grid-column: span 2;">
-        <div class="app-num">05 · 延伸 / 教材常提</div>
-        <h3>其他临床延伸：抗休克、某些昏迷促醒等</h3>
-        <p class="brief">教材与部分文献提及在感染性休克、脑梗死昏迷等场景中的探索或辅助使用。</p>
-        <div class="detail">证据层级与获批适应症不一，勿过度断言疗效。课堂讨论可点到为止：机制上或与内源性阿片肽、微循环改善相关，临床决策须依据指南与说明书，而非外推。</div>
-        <span class="app-tag extend">延伸 · 勿过度断言</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SLIDE 4 ========== -->
-  <section class="slide" data-i="3" aria-label="给药监护注意">
-    <div class="topbar">
-      <span class="badge">用药安全</span>
-      <span class="slide-label">04 / 给药 · 监护 · 注意</span>
-    </div>
-    <h2>给药途径 · 剂量原则 · 监护要点</h2>
-    <p class="sub" style="margin-bottom:12px">以下为常见教材 / 说明书量级，具体以最新说明书与医嘱为准</p>
-    <div class="s4-body">
-      <div class="glass dose-block">
-        <h3><span class="dot"></span>给药与典型剂量</h3>
-        <div class="route-pills">
-          <span class="route-pill primary">首选 IV</span>
-          <span class="route-pill">IM / SC</span>
-          <span class="route-pill">鼻喷（院外）</span>
-        </div>
-        <table class="dose-table">
-          <thead>
-            <tr><th>场景</th><th>常见原则（成人）</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>阿片过量</td>
-              <td>常予 0.4–2 mg IV，必要时每 2–3 min 重复，直至通气改善；总量与间隔遵说明书 / 协议</td>
-            </tr>
-            <tr>
-              <td>术后拮抗</td>
-              <td>更小剂量滴定（如自 0.04–0.1 mg 级起，按需追加），目标是恢复通气而非完全消除镇痛</td>
-            </tr>
-            <tr>
-              <td>起效 / 维持</td>
-              <td>IV 数分钟内起效；作用时间常短于长效阿片 → 症状可「反弹」</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="caution-list">
-        <div class="glass caution danger">
-          <div class="caution-icon">!</div>
-          <div>
-            <h4>再抑制风险</h4>
-            <p>纳洛酮作用短于许多阿片药（如美沙酮、部分缓释制剂）。拮抗成功后仍需持续监护呼吸与意识，必要时重复给药或输液维持。</p>
-          </div>
-        </div>
-        <div class="glass caution warn">
-          <div class="caution-icon">⚠</div>
-          <div>
-            <h4>依赖者可诱发戒断</h4>
-            <p>阿片依赖患者使用拮抗剂可能迅速出现恶心、躁动、交感兴奋等戒断表现。急救时以挽救通气为先，同时做好支持与沟通。</p>
-          </div>
-        </div>
-        <div class="glass caution info">
-          <div class="caution-icon">i</div>
-          <div>
-            <h4>术后勿过度拮抗</h4>
-            <p>避免为「完全催醒」而大剂量翻转镇痛，导致疼痛反跳、血压心率骤升。滴定至满意通气与可唤醒即可。</p>
-          </div>
-        </div>
-        <div class="cite-footer">
-          参考（URL）：
-          <a href="https://www.dayi.org.cn/drug/1157873.html" target="_blank" rel="noopener">dayi.org.cn/drug/1157873</a> ·
-          <a href="http://www.newdruginfo.com/sms/hy105.htm" target="_blank" rel="noopener">newdruginfo.com/sms/hy105</a> ·
-          <a href="https://www.chealth.org.cn/mon/drugs/article/MB145024451.html" target="_blank" rel="noopener">chealth.org.cn … MB145024451</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SLIDE 5 ========== -->
-  <section class="slide" data-i="4" aria-label="要点收束">
-    <div class="topbar">
-      <span class="badge">收束 · Q&amp;A</span>
-      <span class="slide-label">05 / 要点与提问</span>
-    </div>
-    <h2>带走这几条</h2>
-    <div class="s5-body">
-      <div class="takeaways">
-        <div class="glass tk">
-          <div class="tk-n">1</div>
-          <p>纳洛酮是<strong>纯竞争性</strong>阿片受体拮抗剂，对 <strong>μ 亲和力最强</strong>，可逆转呼吸抑制等阿片效应。</p>
-        </div>
-        <div class="glass tk">
-          <div class="tk-n">2</div>
-          <p><strong>阿片过量急救</strong>是核心场景；另有术后催醒、急性乙醇中毒促醒、诊断激发等用途。</p>
-        </div>
-        <div class="glass tk">
-          <div class="tk-n">3</div>
-          <p>过量时常见 <strong>0.4–2 mg IV，q2–3 min</strong> 重复；术后宜小剂量滴定。</p>
-        </div>
-        <div class="glass tk">
-          <div class="tk-n">4</div>
-          <p>作用短 → 防<strong>再抑制</strong>；依赖者可能<strong>诱发戒断</strong>；术后避免过度拮抗镇痛。</p>
-        </div>
-        <div class="glass tk">
-          <div class="tk-n">5</div>
-          <p>延伸用途（抗休克、昏迷促醒等）教材常提，课堂讨论宜标注证据边界，勿过度断言。</p>
-        </div>
-      </div>
-      <div class="glass closing">
-        <div class="big">谢谢</div>
-        <div class="ask">欢迎提问 · 第 10 组</div>
-        <div class="compare-line">
-          <strong>一句话区分：</strong>纳洛酮——急救、起效快、作用短（多注射）；
-          纳曲酮——维持治疗、口服、作用较长，用于依赖管理而非急性逆转。
-        </div>
-        <div class="cite-footer" style="text-align:left;width:100%;margin-top:4px">
-          资料：
-          https://www.dayi.org.cn/drug/1157873.html<br/>
-          http://www.newdruginfo.com/sms/hy105.htm<br/>
-          https://www.chealth.org.cn/mon/drugs/article/MB145024451.html
-        </div>
-      </div>
+      <div class="compare"><strong>一句对比：</strong>纳洛酮 = 急救、起效快、作用偏短；纳曲酮 = 维持治疗、口服、长效。今天只聚焦纳洛酮的临床用法。</div>
+      <div class="cta" id="cta">谢谢 · 欢迎提问 ✨</div>
+      <p class="end-thanks">第 10 组 · 药学本科汇报</p>
     </div>
   </section>
 </div>
 
-<nav class="nav" aria-label="幻灯片导航">
-  <span class="kbd-hint">← → 或点击切换</span>
-  <button type="button" class="nav-btn" id="prevBtn" aria-label="上一页">‹</button>
+<nav id="nav" aria-label="幻灯片导航">
+  <button class="nav-btn" id="prev" type="button" aria-label="上一页">‹</button>
   <div class="dots" id="dots"></div>
-  <button type="button" class="nav-btn" id="nextBtn" aria-label="下一页">›</button>
-  <span class="progress-text" id="progressText">1 / 5</span>
+  <span class="slide-count" id="count">1 / 5</span>
+  <button class="nav-btn" id="next" type="button" aria-label="下一页">›</button>
 </nav>
 
 <script>
-(function () {
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const total = slides.length;
-  let idx = 0;
-  const dotsEl = document.getElementById('dots');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const progressText = document.getElementById('progressText');
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const N=slides.length;
+  let i=0, animating=false;
+  const progress=document.getElementById('progress');
+  const count=document.getElementById('count');
+  const dotsEl=document.getElementById('dots');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
 
-  for (let i = 0; i < total; i++) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'dot-nav' + (i === 0 ? ' active' : '');
-    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 页');
-    b.addEventListener('click', () => go(i));
+  for(let d=0;d<N;d++){
+    const b=document.createElement('button');
+    b.className='dot'+(d===0?' active':'');
+    b.type='button';
+    b.setAttribute('aria-label','第 '+(d+1)+' 页');
+    b.addEventListener('click',()=>go(d));
     dotsEl.appendChild(b);
   }
-  const dots = Array.from(dotsEl.children);
+  const dots=[...dotsEl.children];
 
-  function go(n) {
-    if (n < 0 || n >= total || n === idx) return;
-    const prev = idx;
-    slides[prev].classList.remove('active');
-    slides[prev].classList.add('exit-left');
-    setTimeout(() => slides[prev].classList.remove('exit-left'), 450);
-    idx = n;
-    slides[idx].classList.add('active');
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    prevBtn.disabled = idx === 0;
-    nextBtn.disabled = idx === total - 1;
-    progressText.textContent = (idx + 1) + ' / ' + total;
+  function go(n,dir){
+    if(n===i||animating||n<0||n>=N) return;
+    animating=true;
+    const from=slides[i], to=slides[n];
+    const forward=n>i;
+    from.classList.remove('active');
+    from.classList.add(forward?'exit-left':'exit-right');
+    to.classList.add('active');
+    to.classList.remove('exit-left','exit-right');
+    i=n;
+    progress.style.width=((i+1)/N*100)+'%';
+    count.textContent=(i+1)+' / '+N;
+    dots.forEach((el,k)=>el.classList.toggle('active',k===i));
+    prevBtn.disabled=i===0; nextBtn.disabled=i===N-1;
+    onEnter(i);
+    setTimeout(()=>{from.classList.remove('exit-left','exit-right');animating=false;},520);
   }
-
-  prevBtn.addEventListener('click', () => go(idx - 1));
-  nextBtn.addEventListener('click', () => go(idx + 1));
-  prevBtn.disabled = true;
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
-      if (e.target.closest('input,textarea,button')) return;
-      e.preventDefault();
-      go(idx + 1);
-    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-      e.preventDefault();
-      go(idx - 1);
-    } else if (e.key === 'Home') { go(0); }
-    else if (e.key === 'End') { go(total - 1); }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(i+1)}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1)}
+    if(e.key==='Home'){e.preventDefault();go(0)}
+    if(e.key==='End'){e.preventDefault();go(N-1)}
   });
 
-  /* ---- App cards expand ---- */
-  document.querySelectorAll('[data-card]').forEach((card) => {
-    card.addEventListener('click', () => {
-      const open = card.classList.contains('open');
-      document.querySelectorAll('[data-card]').forEach((c) => c.classList.remove('open'));
-      if (!open) card.classList.add('open');
-      else card.classList.add('open');
+  // swipe
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)) return;
+    if(dx<0) go(i+1); else go(i-1);
+  },{passive:true});
+
+  function onEnter(idx){
+    if(idx===0){/* cover already animated */}
+    if(idx===2) revealCards();
+    if(idx===3){ setStep(currentStep,true); }
+    if(idx===4) revealTakeaways();
+  }
+
+  /* ===== S1 chips + parallax ===== */
+  const tip=document.getElementById('chipTip');
+  document.querySelectorAll('#coverChips .chip').forEach(ch=>{
+    const show=()=>{ch.classList.add('on');tip.textContent=ch.dataset.tip+' · 详见第 3–4 页'};
+    const hide=()=>{ch.classList.remove('on');tip.textContent='轻触标签预览场景 · 共 5 页 · 5–8 分钟'};
+    ch.addEventListener('mouseenter',show);
+    ch.addEventListener('mouseleave',hide);
+    ch.addEventListener('focus',show);
+    ch.addEventListener('blur',hide);
+    ch.addEventListener('click',()=>{show(); ch.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1.04)'}],{duration:280});});
+  });
+  const orb=document.getElementById('orbLayer');
+  document.getElementById('s1').addEventListener('pointermove',e=>{
+    if(window.matchMedia('(pointer:coarse)').matches) return;
+    const r=e.currentTarget.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    orb.style.transform=`translate(${x*-18}px,${y*-12}px)`;
+  });
+
+  /* ===== S2 mechanism physics ===== */
+  const stage=document.getElementById('stage');
+  const pocket=document.getElementById('pocket');
+  const agonist=document.getElementById('agonist');
+  const nlx=document.getElementById('naloxone');
+  const status=document.getElementById('status');
+  const spo2=document.getElementById('spo2');
+  const wave=document.getElementById('wave');
+  const wavePath=document.getElementById('wavePath');
+  const chest=document.getElementById('chest');
+  const flash=document.getElementById('flash');
+  let docked=false, dragging=false, ptrId=null;
+  let ox=0,oy=0, vx=0,vy=0, lastX=0,lastY=0, lastT=0;
+  let rafWave=null, breathPhase=0, recover=0;
+
+  function homeNlx(){
+    nlx.classList.remove('docked','dragging');
+    nlx.style.left=''; nlx.style.top=''; nlx.style.bottom=''; nlx.style.transform='';
+    nlx.style.right='';
+  }
+  function resetMech(){
+    docked=false; dragging=false; recover=0;
+    agonist.classList.remove('eject'); agonist.style.opacity=''; agonist.style.transform='';
+    pocket.classList.remove('glow','magnet');
+    homeNlx();
+    status.textContent='状态：激动剂占据 μ 口袋 · 呼吸抑制中 — 拖入纳洛酮';
+    status.classList.remove('ok');
+    spo2.classList.remove('ok'); spo2.textContent='82%';
+    wave.classList.remove('ok'); chest.classList.remove('ok');
+  }
+  function pocketCenter(){
+    const sr=stage.getBoundingClientRect(), pr=pocket.getBoundingClientRect();
+    return {x:pr.left-sr.left+pr.width/2, y:pr.top-sr.top+pr.height/2, r:Math.min(pr.width,pr.height)*0.55};
+  }
+  function spawnParticles(cx,cy){
+    for(let k=0;k<16;k++){
+      const p=document.createElement('div');
+      p.className='particle';
+      const ang=Math.random()*Math.PI*2, dist=20+Math.random()*70;
+      p.style.left=cx+'px'; p.style.top=cy+'px';
+      p.style.background=k%2? '#5eead4':'#fbbf24';
+      stage.appendChild(p);
+      const tx=Math.cos(ang)*dist, ty=Math.sin(ang)*dist-20;
+      p.animate([
+        {transform:'translate(-50%,-50%) scale(1)',opacity:1},
+        {transform:`translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`,opacity:0}
+      ],{duration:520+Math.random()*280,easing:'cubic-bezier(.2,.7,.2,1)'}).onfinish=()=>p.remove();
+    }
+  }
+  function successDock(){
+    if(docked) return;
+    docked=true; dragging=false;
+    const c=pocketCenter();
+    nlx.classList.remove('dragging');
+    nlx.classList.add('docked');
+    nlx.style.left=c.x+'px'; nlx.style.top=c.y+'px'; nlx.style.bottom='auto';
+    nlx.style.transform='translate(-50%,-50%)';
+    pocket.classList.remove('magnet'); pocket.classList.add('glow');
+    agonist.classList.add('eject');
+    spawnParticles(c.x,c.y);
+    flash.classList.remove('on'); void flash.offsetWidth; flash.classList.add('on');
+    status.textContent='状态：纳洛酮对接成功 · 竞争性置换完成 · 呼吸抑制正在逆转';
+    status.classList.add('ok');
+    // recover breath
+    const t0=performance.now();
+    (function tick(now){
+      recover=Math.min(1,(now-t0)/1400);
+      if(recover<1) requestAnimationFrame(tick);
+      else { spo2.classList.add('ok'); wave.classList.add('ok'); chest.classList.add('ok'); }
+    })(t0);
+    if(navigator.vibrate) try{navigator.vibrate(28)}catch(_){}
+  }
+  function setNlxPos(x,y){
+    const sr=stage.getBoundingClientRect();
+    const half=32;
+    x=Math.max(half,Math.min(sr.width-half,x));
+    y=Math.max(half,Math.min(sr.height-half,y));
+    nlx.style.left=x+'px'; nlx.style.top=y+'px'; nlx.style.bottom='auto';
+    nlx.style.transform='translate(-50%,-50%)';
+    const c=pocketCenter();
+    const dx=c.x-x, dy=c.y-y, dist=Math.hypot(dx,dy);
+    if(!docked){
+      if(dist<c.r*1.65){
+        pocket.classList.add('magnet');
+        // magnetic pull
+        const pull=Math.max(0,1-dist/(c.r*1.65))*0.18;
+        nlx.style.left=(x+dx*pull)+'px';
+        nlx.style.top=(y+dy*pull)+'px';
+        if(dist<c.r*0.72) successDock();
+      } else pocket.classList.remove('magnet');
+    }
+  }
+  function onDown(e){
+    if(docked) return;
+    dragging=true; ptrId=e.pointerId;
+    nlx.classList.add('dragging');
+    nlx.setPointerCapture?.(ptrId);
+    const sr=stage.getBoundingClientRect();
+    const r=nlx.getBoundingClientRect();
+    ox=e.clientX-(r.left+r.width/2); oy=e.clientY-(r.top+r.height/2);
+    // if still in CSS bottom/left home, convert
+    if(!nlx.style.left){
+      setNlxPos(r.left-sr.left+r.width/2, r.top-sr.top+r.height/2);
+    }
+    lastX=e.clientX; lastY=e.clientY; lastT=performance.now(); vx=vy=0;
+    e.preventDefault();
+  }
+  function onMove(e){
+    if(!dragging||e.pointerId!==ptrId||docked) return;
+    const sr=stage.getBoundingClientRect();
+    const x=e.clientX-sr.left-ox, y=e.clientY-sr.top-oy;
+    const now=performance.now(), dt=Math.max(8,now-lastT);
+    vx=(e.clientX-lastX)/dt; vy=(e.clientY-lastY)/dt;
+    lastX=e.clientX; lastY=e.clientY; lastT=now;
+    setNlxPos(x,y);
+  }
+  function onUp(e){
+    if(!dragging||(ptrId!=null&&e.pointerId!==ptrId)) return;
+    dragging=false; nlx.classList.remove('dragging');
+    if(docked) return;
+    // inertia
+    let x=parseFloat(nlx.style.left), y=parseFloat(nlx.style.top);
+    let ivx=vx*14, ivy=vy*14;
+    const c=pocketCenter();
+    (function coast(){
+      if(docked||dragging) return;
+      ivx*=0.90; ivy*=0.90;
+      x+=ivx; y+=ivy;
+      // soft attract if near
+      const dx=c.x-x, dy=c.y-y, dist=Math.hypot(dx,dy);
+      if(dist<c.r*1.8){ x+=dx*0.08; y+=dy*0.08; }
+      setNlxPos(x,y);
+      if(docked) return;
+      if(Math.hypot(ivx,ivy)>0.15 || dist<c.r*1.8 && dist>c.r*0.72) requestAnimationFrame(coast);
+      else if(dist>=c.r*1.8) pocket.classList.remove('magnet');
+    })();
+  }
+  nlx.addEventListener('pointerdown',onDown);
+  nlx.addEventListener('pointermove',onMove);
+  nlx.addEventListener('pointerup',onUp);
+  nlx.addEventListener('pointercancel',onUp);
+  nlx.addEventListener('click',e=>{
+    if(docked) return;
+    // tap fallback: fly to pocket
+    const sr=stage.getBoundingClientRect();
+    const r=nlx.getBoundingClientRect();
+    let x=r.left-sr.left+r.width/2, y=r.top-sr.top+r.height/2;
+    const c=pocketCenter();
+    const t0=performance.now();
+    (function fly(now){
+      const t=Math.min(1,(now-t0)/420);
+      const e2=1-Math.pow(1-t,3);
+      setNlxPos(x+(c.x-x)*e2, y+(c.y-y)*e2);
+      if(t<1 && !docked) requestAnimationFrame(fly);
+      else if(!docked) successDock();
+    })(t0);
+  });
+  document.getElementById('btnReset').addEventListener('click',resetMech);
+  document.getElementById('btnDemo').addEventListener('click',()=>{
+    resetMech();
+    setTimeout(()=>nlx.click(),80);
+  });
+
+  // waveform loop
+  function drawWave(){
+    breathPhase+=docked?0.22:0.08;
+    const amp=docked?(4+recover*10):(2.2);
+    const base=18;
+    let d='M0 '+base;
+    for(let x=0;x<=160;x+=4){
+      const y=base+Math.sin((x+breathPhase*10)*0.18)*amp + Math.sin((x+breathPhase*6)*0.07)*amp*0.35;
+      d+=' L'+x+' '+y.toFixed(2);
+    }
+    wavePath.setAttribute('d',d);
+    if(!docked){
+      const v=82+Math.sin(breathPhase*0.5)*1.2;
+      spo2.textContent=v.toFixed(0)+'%';
+    } else {
+      const v=82+recover*16+Math.sin(breathPhase)*0.4;
+      spo2.textContent=Math.min(99,v).toFixed(0)+'%';
+    }
+    rafWave=requestAnimationFrame(drawWave);
+  }
+  drawWave();
+
+  /* ===== S3 cards ===== */
+  const cards=[...document.querySelectorAll('.use-card')];
+  function revealCards(){
+    cards.forEach((c,k)=>{
+      c.classList.remove('show');
+      setTimeout(()=>c.classList.add('show'),80+k*70);
+    });
+  }
+  cards.forEach(card=>{
+    card.addEventListener('pointermove',e=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+      card.style.setProperty('--mx',(px*100)+'%');
+      card.style.setProperty('--my',(py*100)+'%');
+      const rx=(py-.5)*-6, ry=(px-.5)*8;
+      if(!window.matchMedia('(pointer:coarse)').matches) card.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;
+    });
+    card.addEventListener('pointerleave',()=>{card.style.transform='';});
+    const toggle=()=>{
+      const open=card.classList.contains('open');
+      cards.forEach(c=>c.classList.remove('open'));
+      if(!open) card.classList.add('open');
+    };
+    card.addEventListener('click',toggle);
+    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+  });
+  document.querySelectorAll('#sceneSwitch .scene-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('#sceneSwitch .scene-btn').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      const sc=btn.dataset.scene;
+      cards.forEach(c=>{
+        const match=sc==='all'||c.dataset.i===sc;
+        c.classList.toggle('dim',!match);
+        if(match && sc!=='all'){ c.classList.add('open'); c.classList.add('show'); }
+        if(sc==='all') c.classList.remove('open');
+      });
     });
   });
 
-  /* ---- Mechanism demo ---- */
-  const naloxoneMol = document.getElementById('naloxoneMol');
-  const agonistMol = document.getElementById('agonistMol');
-  const receptor = document.getElementById('receptor');
-  const pocket = document.getElementById('pocket');
-  const receptorTag = document.getElementById('receptorTag');
-  const respMeter = document.getElementById('respMeter');
-  const statusBox = document.getElementById('statusBox');
-  const statusText = document.getElementById('statusText');
-  const particles = document.getElementById('particles');
-  const shelf = document.getElementById('naloxoneShelf');
-  const btnApply = document.getElementById('btnApply');
-  const btnReset = document.getElementById('btnReset');
-  const demoCanvas = document.getElementById('demoCanvas');
+  /* ===== S4 stepper ===== */
+  const stepsData=[
+    {
+      title:'给药途径',
+      meta:['静脉优先','肌注 / 皮下','舌下片等'],
+      timeline:[{t:'首选',b:'静脉注射'},{t:'备选',b:'肌注/皮下'},{t:'剂型',b:'舌下等'}],
+      body:'静脉给药起效最快，急救时优先。无法建立静脉通路时，可肌内或皮下注射。另有舌下片等剂型，课堂一句带过即可，重点仍是「尽快把药送到循环」。',
+      warn:'操作核心：先保证气道与通气支持，再给药；途径选择服务于「尽快起效」。'
+    },
+    {
+      title:'阿片过量 · 成人常见思路',
+      meta:['0.4–2 mg IV','每 2–3 min 可重复','无效→重审诊断'],
+      timeline:[{t:'0 min',b:'首剂 IV'},{t:'2–3 min',b:'评估/重复'},{t:'足量后',b:'仍无效？'}],
+      body:'成人过量常见：0.4–2 mg 静脉注射，必要时每 2–3 分钟重复。若已给足量仍无明显反应，应重新考虑诊断（是否确为阿片、是否混合中毒等）。',
+      warn:'起效快不等于「打完就结束」——仍要持续监护，防呼吸再抑制。'
+    },
+    {
+      title:'术后催醒 · 滴定',
+      meta:['0.1–0.2 mg 级', '小剂量滴定','保留镇痛'],
+      timeline:[{t:'评估',b:'通气/镇痛'},{t:'滴定',b:'小剂量'},{t:'目标',b:'通畅不过痛'}],
+      body:'术后场景强调滴定：可用 0.1–0.2 mg 量级思路逐步给予，目标是呼吸通畅、神志改善，同时避免一次给足把镇痛「掀翻」，引起躁动与剧痛。',
+      warn:'过猛逆转 = 镇痛丢失 + 交感兴奋风险；慢一点，看反应。'
+    },
+    {
+      title:'急性乙醇中毒',
+      meta:['约 0.8–1.2 mg','可重复','促醒'],
+      timeline:[{t:'评估',b:'气道/意识'},{t:'给药',b:'0.8–1.2 mg'},{t:'复查',b:'可重复'}],
+      body:'重度乙醇中毒促醒可参考约 0.8–1.2 mg，并可按需重复（以说明书与临床判断为准）。同时排查是否合并阿片或其他镇静药。',
+      warn:'促醒不等于可以放松监护；混合中毒时呼吸风险更高。'
+    },
+    {
+      title:'监护要点（必记）',
+      meta:['半衰期偏短','防再抑制','戒断风险'],
+      timeline:[{t:'给药',b:'起效'},{t:'监护',b:'持续观察'},{t:'风险',b:'再抑制/戒断'}],
+      body:'纳洛酮半衰期常短于不少长效阿片 → 症状可能「先好后坏」。必须持续监护通气与意识。对阿片依赖者，拮抗可能诱发戒断，需预判与准备。',
+      warn:'课堂金句：短效拮抗剂 vs 长效阿片 = 必须留下观察，而不是「针完人走」。'
+    }
+  ];
+  let currentStep=0;
+  const doseTitle=document.getElementById('doseTitle');
+  const doseMeta=document.getElementById('doseMeta');
+  const doseBody=document.getElementById('doseBody');
+  const doseWarn=document.getElementById('doseWarn');
+  const timeline=document.getElementById('timeline');
+  function setStep(n,force){
+    if(n===currentStep&&!force) {/* still refresh anim */}
+    currentStep=n;
+    document.querySelectorAll('#stepper .step').forEach((el,k)=>el.classList.toggle('on',k===n));
+    const d=stepsData[n];
+    doseTitle.textContent=d.title;
+    doseMeta.innerHTML=d.meta.map(m=>`<span class="pill">${m}</span>`).join('');
+    doseBody.textContent=d.body;
+    doseWarn.textContent='⚠ '+d.warn;
+    timeline.innerHTML=d.timeline.map(t=>`<div class="t-node"><b>${t.b}</b>${t.t}</div>`).join('');
+    [...timeline.children].forEach((el,k)=>setTimeout(()=>el.classList.add('show'),40+k*90));
+    dosePanelAnim();
+  }
+  function dosePanelAnim(){
+    const p=document.getElementById('dosePanel');
+    p.animate([{opacity:.5,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:280,easing:'ease-out'});
+  }
+  document.querySelectorAll('#stepper .step').forEach(btn=>{
+    btn.addEventListener('click',()=>setStep(+btn.dataset.step,true));
+  });
+  setStep(0,true);
 
-  let cleared = false;
-  let dragState = null;
-  let ghost = null;
-
-  function burst(x, y) {
-    const rect = demoCanvas.getBoundingClientRect();
-    for (let i = 0; i < 18; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const ang = (Math.PI * 2 * i) / 18;
-      const dist = 40 + Math.random() * 70;
-      p.style.left = (x - rect.left) + 'px';
-      p.style.top = (y - rect.top) + 'px';
-      p.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
-      p.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
-      p.style.background = i % 2 ? '#2dd4bf' : '#22d3ee';
-      particles.appendChild(p);
-      setTimeout(() => p.remove(), 700);
+  /* ===== S5 takeaways ===== */
+  const tks=[...document.querySelectorAll('.tk')];
+  let tkRevealed=false;
+  function revealTakeaways(){
+    tks.forEach((el,k)=>{
+      el.classList.remove('show');
+      setTimeout(()=>el.classList.add('show'),70+k*80);
+    });
+    tkRevealed=true;
+  }
+  function burst(){
+    const box=document.getElementById('confetti');
+    const colors=['#2dd4bf','#38bdf8','#fbbf24','#a78bfa','#fb7185'];
+    for(let k=0;k<36;k++){
+      const i=document.createElement('i');
+      i.style.left=Math.random()*100+'%';
+      i.style.background=colors[k%colors.length];
+      i.style.animationDelay=(Math.random()*0.25)+'s';
+      i.style.transform=`rotate(${Math.random()*90}deg)`;
+      box.appendChild(i);
+      setTimeout(()=>i.remove(),1600);
     }
   }
-
-  function applyAntagonism() {
-    if (cleared) return;
-    cleared = true;
-    agonistMol.classList.add('ejected');
-    receptor.classList.remove('breathing');
-    receptor.classList.add('cleared');
-    receptorTag.textContent = 'μ 阿片受体 · 纳洛酮结合';
-    respMeter.classList.add('ok');
-    statusBox.classList.add('ok');
-    statusText.textContent = '纳洛酮竞争性结合受体 → 激动剂被置换 → 呼吸功能回升';
-    naloxoneMol.style.visibility = 'hidden';
-
-    const docked = document.createElement('div');
-    docked.className = 'mol naloxone naloxone-docked';
-    docked.id = 'dockedNaloxone';
-    docked.innerHTML = '<span class="mol-sym">N</span>纳洛酮';
-    docked.style.cursor = 'default';
-    pocket.appendChild(docked);
-
-    const pr = pocket.getBoundingClientRect();
-    burst(pr.left + pr.width / 2, pr.top + pr.height / 2);
-    btnApply.disabled = true;
-  }
-
-  function resetDemo() {
-    cleared = false;
-    agonistMol.classList.remove('ejected');
-    receptor.classList.remove('cleared');
-    receptor.classList.add('breathing');
-    receptorTag.textContent = 'μ 阿片受体 · 被占用';
-    respMeter.classList.remove('ok');
-    statusBox.classList.remove('ok');
-    statusText.textContent = '阿片激动剂占据受体 → 呼吸抑制、镇静风险升高';
-    naloxoneMol.style.visibility = '';
-    naloxoneMol.style.position = '';
-    naloxoneMol.style.left = '';
-    naloxoneMol.style.top = '';
-    naloxoneMol.style.transform = '';
-    naloxoneMol.classList.remove('dragging');
-    if (!shelf.contains(naloxoneMol)) shelf.insertBefore(naloxoneMol, shelf.firstChild);
-    const d = document.getElementById('dockedNaloxone');
-    if (d) d.remove();
-    btnApply.disabled = false;
-    endDrag(true);
-  }
-
-  function hitPocket(clientX, clientY) {
-    const r = pocket.getBoundingClientRect();
-    const pad = 36;
-    return clientX >= r.left - pad && clientX <= r.right + pad &&
-           clientY >= r.top - pad && clientY <= r.bottom + pad;
-  }
-
-  function startDrag(clientX, clientY, pointerId) {
-    if (cleared) return;
-    dragState = { pointerId, ox: clientX, oy: clientY, moved: false };
-    const rect = naloxoneMol.getBoundingClientRect();
-    ghost = naloxoneMol;
-    ghost.classList.add('dragging');
-    ghost.style.position = 'fixed';
-    ghost.style.left = rect.left + 'px';
-    ghost.style.top = rect.top + 'px';
-    ghost.style.width = rect.width + 'px';
-    ghost.style.zIndex = '100';
-    ghost.style.pointerEvents = 'none';
-    dragState.offsetX = clientX - rect.left;
-    dragState.offsetY = clientY - rect.top;
-    try { ghost.setPointerCapture && ghost.setPointerCapture(pointerId); } catch (_) {}
-  }
-
-  function moveDrag(clientX, clientY) {
-    if (!dragState || !ghost) return;
-    const dx = clientX - dragState.ox;
-    const dy = clientY - dragState.oy;
-    if (Math.abs(dx) + Math.abs(dy) > 6) dragState.moved = true;
-    ghost.style.left = (clientX - dragState.offsetX) + 'px';
-    ghost.style.top = (clientY - dragState.offsetY) + 'px';
-    if (hitPocket(clientX, clientY)) pocket.classList.add('drop-ready');
-    else pocket.classList.remove('drop-ready');
-  }
-
-  function endDrag(cancel) {
-    pocket.classList.remove('drop-ready');
-    if (!dragState) return;
-    const cx = dragState.lastX;
-    const cy = dragState.lastY;
-    const tapApply = !cancel && !dragState.moved;
-    const dropApply = !cancel && cx != null && hitPocket(cx, cy);
-    const shouldApply = tapApply || dropApply;
-    if (ghost) {
-      ghost.classList.remove('dragging');
-      ghost.style.pointerEvents = '';
-      ghost.style.zIndex = '';
-      if (!shouldApply) {
-        ghost.style.position = '';
-        ghost.style.left = '';
-        ghost.style.top = '';
-        ghost.style.width = '';
-      }
-    }
-    dragState = null;
-    ghost = null;
-    if (shouldApply) applyAntagonism();
-  }
-
-  naloxoneMol.addEventListener('pointerdown', (e) => {
-    if (cleared) return;
-    e.preventDefault();
-    naloxoneMol.setPointerCapture(e.pointerId);
-    startDrag(e.clientX, e.clientY, e.pointerId);
-    dragState.lastX = e.clientX;
-    dragState.lastY = e.clientY;
+  tks.forEach(el=>{
+    const tog=()=>{
+      el.classList.toggle('done');
+      if(tks.every(t=>t.classList.contains('done'))) burst();
+    };
+    el.addEventListener('click',tog);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tog()}});
   });
 
-  naloxoneMol.addEventListener('pointermove', (e) => {
-    if (!dragState) return;
-    dragState.lastX = e.clientX;
-    dragState.lastY = e.clientY;
-    moveDrag(e.clientX, e.clientY);
-  });
-
-  naloxoneMol.addEventListener('pointerup', () => endDrag(false));
-  naloxoneMol.addEventListener('pointercancel', () => endDrag(true));
-
-  /* Short tap on naloxone (= click) also applies via endDrag tapApply */
-
-  btnApply.addEventListener('click', applyAntagonism);
-  btnReset.addEventListener('click', resetDemo);
-
-  /* Also allow dropping by clicking the pocket when not cleared */
-  pocket.addEventListener('click', () => {
-    if (!cleared) applyAntagonism();
-  });
+  // init
+  progress.style.width=((i+1)/N*100)+'%';
+  prevBtn.disabled=true;
 })();
 </script>
 </body>
